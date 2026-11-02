@@ -1,0 +1,36 @@
+name: Import official BINA PivotChart ZIP
+on:
+  push:
+    paths:
+      - 'imports/BinaPivotChart_Designer_Viewer_v*.zip'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Verify and import uploaded source
+        run: |
+          set -euo pipefail
+          archive="$(find imports -maxdepth 1 -type f -name 'BinaPivotChart_Designer_Viewer_v*.zip' | sort -V | tail -n 1)"
+          if [ -z "$archive" ]; then
+            echo "No incoming archive found; no action needed."
+            exit 0
+          fi
+          python3 scripts/import_chart_zip.py "$archive"
+          rm -f "$archive"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Source already up to date"
+          else
+            git commit -m "feat: import official PivotChart source from uploaded archive [skip ci]"
+            git push origin HEAD:main
+          fi
