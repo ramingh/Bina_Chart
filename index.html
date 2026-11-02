@@ -1,0 +1,12 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>BINA PivotChart Designer 2.10</title><link rel="stylesheet" href="css/BinaPivotChart.css"><style>html,body{margin:0;min-height:100%;background:#f1f4f8}</style></head>
+<body><div id="chart-designer"></div><script src="js/BinaPivotRenderer.js"></script><script src="js/BinaPivotChart.js"></script><script src="js/demo-data.js"></script>
+<script>
+// Standalone designer: the server endpoint can be provided later without changing the component.
+const editor = new BinaPivotChart('#chart-designer', {
+ mode: 'designer',
+ config: window.BinaPivotDemoConfig,
+ data: window.BinaPivotDemoRows,
+ // Production IIS example: storageEndpoint: '/BinaPivotChartService.asmx'
+});
+window.binaDesigner=editor;
+</script></body></html>
