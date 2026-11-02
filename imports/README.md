@@ -1,0 +1,1 @@
+Upload the original BinaPivotChart_Designer_Viewer_v2.12.0.zip into this directory to trigger the automatic source import.
