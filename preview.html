@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BINA PivotChart — پیش‌نمایش مستقل</title>
+<link rel="stylesheet" href="css/BinaPivotChart.css">
+<style>html,body{margin:0;min-height:100%;background:#f1f4f8}#preview-wait{padding:18px;text-align:center;font:14px Tahoma,sans-serif;color:#52637b}</style>
+</head>
+<body>
+<div id="preview-wait">در حال دریافت تعریف نمودار از صفحه Designer...</div>
+<div id="chart-preview"></div>
+<script src="js/BinaPivotRenderer.js"></script>
+<script src="js/BinaPivotChart.js"></script>
+<script src="js/BinaPivotViewer.js"></script>
+<script>
+(function(){
+ 'use strict';
+ const token=new URLSearchParams(location.search).get('draft');
+ const wait=document.getElementById('preview-wait');
+ if(!token||!window.opener){wait.textContent='برای پیش‌نمایش طراحی‌نشده، از دکمه «پیش‌نمایش» در صفحه Designer استفاده کنید. برای نمایش ذخیره‌شده، viewer.html را باز کنید.';return;}
+ let received=false;
+ function gotMessage(event){
+  if(event.source!==window.opener||event.data?.type!=='BINA_PIVOT_PREVIEW_DATA'||event.data?.token!==token||received)return;
+  // Same-origin check is required for HTTP(S). Local file previews may use opaque origins.
+  if(location.protocol!=='file:'&&event.origin!==location.origin)return;
+  received=true;window.removeEventListener('message',gotMessage);
+  try{
+   const definition=BinaPivotChart.validate(event.data.config);
+   const provider=typeof window.BinaPivotPreviewProviderFactory==='function'?
+      window.BinaPivotPreviewProviderFactory(definition):null;
+   if(event.data.requiresProvider&&!provider&&!(event.data.rows||[]).length){
+    wait.textContent='تعریف نمودار دریافت شد، اما این گزارش به اتصال داده نیاز دارد. آداپتور داده Preview را تنظیم کنید.';
+    return;
+   }
+   wait.remove();
+   window.binaPreview=new BinaPivotViewer('#chart-preview',{
+    config:definition,data:event.data.rows||[],dataProvider:provider
+   });
+  }catch(error){wait.textContent='خطا در پیش‌نمایش: '+error.message;}
+ }
+ window.addEventListener('message',gotMessage);
+ window.opener.postMessage({type:'BINA_PIVOT_PREVIEW_READY',token},location.protocol==='file:'?'*':location.origin);
+})();
+</script>
+</body>
+</html>

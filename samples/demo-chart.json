@@ -1,0 +1,118 @@
+{
+  "schema": "bina-pivotchart",
+  "version": 2,
+  "chartId": "finance-demo",
+  "name": "نمودار نسبت‌های مالی",
+  "dataSource": {
+    "id": "finance-demo"
+  },
+  "fields": [
+    {
+      "name": "salmali",
+      "label": "سال مالی",
+      "type": "number"
+    },
+    {
+      "name": "SharhNesbat",
+      "label": "شرح نسبت",
+      "type": "string"
+    },
+    {
+      "name": "MeghdarNesbat",
+      "label": "مقدار نسبت",
+      "type": "number"
+    },
+    {
+      "name": "EsmSherkat",
+      "label": "نام شرکت",
+      "type": "string"
+    },
+    {
+      "name": "Foroosh",
+      "label": "فروش",
+      "type": "number"
+    },
+    {
+      "name": "Hazineh",
+      "label": "هزینه",
+      "type": "number"
+    }
+  ],
+  "xFields": [
+    "salmali",
+    "SharhNesbat"
+  ],
+  "seriesField": null,
+  "filterFields": [
+    "EsmSherkat"
+  ],
+  "measures": [
+    {
+      "id": "m1",
+      "field": "MeghdarNesbat",
+      "aggregate": "sum",
+      "alias": "مجموع مقدار نسبت"
+    }
+  ],
+  "type": "bar",
+  "mode": "3d",
+  "titleTemplate": "نمودار نسبت‌های مالی - {EsmSherkat}",
+  "regression": false,
+  "style": {
+    "background": "#d1bbb3",
+    "plotBackground": "#f8f8f6",
+    "textColor": "#232323",
+    "gridColor": "#7c8481",
+    "titleSize": 22,
+    "axisSize": 16,
+    "labelSize": 15,
+    "valueSize": 15,
+    "depth": 12,
+    "verticalLabels": true,
+    "showValues": true,
+    "valueBold": false,
+    "grid": true,
+    "legend": true,
+    "titleShow": true,
+    "colors": [
+      "#b3887b",
+      "#628fcb",
+      "#72a65a",
+      "#c59d44"
+    ],
+    "barWidthPct": 72
+  },
+  "defaultFilters": {
+    "EsmSherkat": {
+      "all": false,
+      "values": [
+        "\"شرکت آریا\""
+      ]
+    }
+  },
+  "interaction": {
+    "reorder": true,
+    "reassign": true,
+    "filter": true,
+    "color": true,
+    "measureVisibility": true
+  },
+  "fieldStyles": {
+    "x": {
+      "salmali": {
+        "fontFamily": "BinaYekan",
+        "fontSize": 16
+      },
+      "SharhNesbat": {
+        "fontFamily": "BinaYekan",
+        "fontSize": 15
+      }
+    },
+    "y": {
+      "m1": {
+        "fontFamily": "BinaYekan",
+        "fontSize": 15
+      }
+    }
+  }
+}
